@@ -1,12 +1,10 @@
-// app/layout.js
-import { StackProvider, StackTheme } from "@stackframe/stack";
-import { stackServerApp } from "../stack";
 import './globals.css';
 import Link from 'next/link';
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body><StackProvider app={stackServerApp}><StackTheme>
+      <body>
         <header className="header">
           <nav>
             <ul>
@@ -14,14 +12,14 @@ export default function RootLayout({ children }) {
               <li><Link href="/sops">SOPs</Link></li>
               <li><Link href="/admin">Admin Dashboard</Link></li>
               <li><Link href="/login">Login</Link></li>
+              <div className="dashboard-image">
+                <img src="/logo.png" alt="Logo" width={40} height={40} />
+              </div>
             </ul>
           </nav>
         </header>
-
         {children}
-
-       
-      </StackTheme></StackProvider></body>
+      </body>
     </html>
   );
 }
