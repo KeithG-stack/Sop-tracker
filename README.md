@@ -28,7 +28,7 @@ A modern, real-time Standard Operating Procedures (SOP) management system built 
 - **Styling**: Tailwind CSS with custom theming
 - **Fonts**: Geist Sans & Geist Mono
 - **Real-time**: WebSocket integration for live updates
-- **Database**: [Your database choice]
+- **Database**: NeonDB
 - **Authentication**: [Your auth provider]
 
 ## 📋 Prerequisites
