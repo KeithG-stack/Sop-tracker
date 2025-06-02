@@ -1,7 +1,7 @@
 //connects to databse
 
 import { neon } from './database.js';
-import { initializeDatabase } from '../Models/DatabaseCreation.js';
+import { initializeDatabase } from './DatabaseCreation.js';
 import 'dotenv/config'
 
 // Call the initializeDatabase function
