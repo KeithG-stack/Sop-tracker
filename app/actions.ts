@@ -1,9 +1,12 @@
-// app/actions.ts
 "use server";
-import { neon } from "@neondatabase/serverless";
+import prisma from "../lib/prisma.config";
 
 export async function getData() {
-    const sql = neon(process.env.DATABASE_URL);
-    const data = await sql`...`;
-    return data;
+    try {
+        const data = await prisma.user.findMany();
+        return data;
+    } catch (error) {
+        console.error('Database error:', error);
+        throw new Error('Failed to fetch data');
+    }
 }
