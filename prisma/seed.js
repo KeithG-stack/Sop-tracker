@@ -1,18 +1,19 @@
-const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
-
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
+  
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 10);
   
   const admin = await prisma.user.upsert({
-    where: { email: 'admin@example.com' },
+
+    where: { email: 'admin123@example.com' },
     update: {},
     create: {
-      name: 'Admin User',
-      email: 'admin@example.com',
+      name: 'Admin User_2',
+      email: 'admin123@example.com',
       password: hashedPassword,
       role: 'ADMIN',
     },
@@ -50,7 +51,7 @@ async function main() {
   ]);
 
   // Create sample SOP
-  const sampleSOP = await prisma.sOP.create({
+  const sampleSOP = await prisma.sop.create({
     data: {
       title: 'Sample Safety Procedure',
       content: 'This is a sample SOP for safety procedures...',

@@ -4,9 +4,11 @@ import prisma from '../../../lib/prisma.config';
 import bcrypt from 'bcryptjs';
 
 export async function POST(request) {
-  try {
-    const { name, email, password } = await request.json();
 
+  try {
+
+    const { name, email, password } = await request.json();
+    console.log( 'Received signup data:', { name, email, password });
     // Check if user exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {

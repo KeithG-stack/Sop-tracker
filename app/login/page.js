@@ -7,15 +7,24 @@ import styles from './Login.module.css';
 import Link from 'next/link';
 
 export default function Login() {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e) => {
+
+    // Prevent the default form submission behavior
+    // This is important to handle the form submission with JavaScript
     e.preventDefault();
 
     try {
+      
       // Make an API call to your backend for user authentication
+      console.log('Attempting to log in with:', { email, password });
+      console.log('Attempting to log in with:', e);
+      // Replace with your actual API endpoint
+
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: {

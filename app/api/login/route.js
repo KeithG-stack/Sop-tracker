@@ -1,13 +1,18 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../lib/prisma.config.js'; // Updated import path
 import bcrypt from 'bcryptjs';
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 export async function POST(request) {
+
   try {
+
     const { email, password } = await request.json();
 
+    console.log('Received login data:', { email, password });
     // Find user by email
     const user = await prisma.user.findUnique({ where: { email } });
+    console.log('User found:', user);
 
     if (!user) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
@@ -15,6 +20,7 @@ export async function POST(request) {
 
     // Compare password
     const valid = await bcrypt.compare(password, user.password);
+      console.log('Password valid:', valid);
 
     if (!valid) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
