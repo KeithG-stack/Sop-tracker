@@ -29,7 +29,7 @@ const handleSubmit = async (e) => {
       throw new Error(data.error || 'Registration failed');
     }
 
-    router.push('/Home');
+    router.push('/home');
   } catch (error) {
     console.error('Error:', error);
     setError(error.message);
