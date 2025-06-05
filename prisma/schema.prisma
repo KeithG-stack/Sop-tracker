@@ -1,12 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// This is your Prisma schema file
 generator client {
   provider = "prisma-client-js"
-  output   = "../lib/generated/prisma"
 }
 
 datasource db {
@@ -14,29 +8,82 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
+// User model for authentication
 model User {
   id        Int      @id @default(autoincrement())
   name      String
   email     String   @unique
   password  String
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  sops      SOP[]    // Add this line to establish the relation
+  
+  // Relations
+  sops      SOP[]
+  sopViews  SOPView[]
 
   @@map("users")
 }
 
-// Add your SOP model here
+// SOP (Standard Operating Procedure) model
 model SOP {
   id          Int      @id @default(autoincrement())
   title       String
-  content     String
-  version     String
+  content     String   @db.Text
+  version     String   @default("1.0")
+  status      SOPStatus @default(DRAFT)
   authorId    Int
+  categoryId  Int?
+  
+  // Relations
   author      User     @relation(fields: [authorId], references: [id])
+  category    Category? @relation(fields: [categoryId], references: [id])
+  views       SOPView[]
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@map("sops")
+}
+
+// Category model for organizing SOPs
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  color       String?  @default("#0070f3")
+  
+  // Relations
+  sops        SOP[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("categories")
+}
+
+// Track SOP views for analytics
+model SOPView {
+  id      Int      @id @default(autoincrement())
+  sopId   Int
+  userId  Int
+  viewedAt DateTime @default(now())
+  
+  // Relations
+  sop     SOP      @relation(fields: [sopId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
+
+  @@map("sop_views")
+}
+
+// Enums
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SOPStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }

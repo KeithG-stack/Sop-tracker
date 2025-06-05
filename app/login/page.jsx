@@ -26,7 +26,7 @@ export default function Login() {
 
       if (response.ok) {
         // Authentication successful, redirect to the authenticated home page
-        router.push('/home');
+        router.push('/Home');
       } else {
         // Authentication failed, handle the error
         console.error('Authentication failed');
