@@ -1,11 +1,13 @@
-// src/pages/Home.jsx
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './Home.css';
+'use client';
 
-const Home = () => {
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import '../Home.css'; // Adjust path if needed
+
+export default function Home() {
   const [sops, setSOPs] = useState([]);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     const storedSOPs = JSON.parse(localStorage.getItem('sops') || '[]');
@@ -17,6 +19,10 @@ const Home = () => {
       const updatedSOPs = sops.filter(sop => sop.id !== id);
       setSOPs(updatedSOPs);
       localStorage.setItem('sops', JSON.stringify(updatedSOPs));
+      // Redirect to /home if no SOPs left
+      if (updatedSOPs.length === 0) {
+        router.push('./pages/Home');
+      }
     }
   };
 
@@ -24,7 +30,7 @@ const Home = () => {
     <div className="home-page">
       <div className="page-header">
         <h1>SOP Management System</h1>
-        <Link to="/create-sop" className="btn-primary">
+        <Link href="/create-sop" className="btn-primary">
           Create New SOP
         </Link>
       </div>
@@ -33,7 +39,7 @@ const Home = () => {
         {sops.length === 0 ? (
           <div className="empty-state">
             <p>No SOPs created yet.</p>
-            <Link to="/create-sop">Create your first SOP</Link>
+            <Link href="/create-sop">Create your first SOP</Link>
           </div>
         ) : (
           sops.map(sop => (
@@ -52,13 +58,13 @@ const Home = () => {
               </div>
               <div className="sop-card-actions">
                 <button 
-                  onClick={() => navigate(`/sop/${sop.id}`)}
+                  onClick={() => router.push(`/sop/${sop.id}`)}
                   className="btn-view"
                 >
                   View
                 </button>
                 <button 
-                  onClick={() => navigate(`/edit-sop/${sop.id}`)}
+                  onClick={() => router.push(`/edit-sop/${sop.id}`)}
                   className="btn-edit"
                 >
                   Edit
@@ -76,6 +82,4 @@ const Home = () => {
       </div>
     </div>
   );
-};
-
-export default Home;
+}

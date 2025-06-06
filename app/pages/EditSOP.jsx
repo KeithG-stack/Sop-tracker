@@ -1,17 +1,19 @@
-// src/pages/EditSOP.jsx
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import SOPForm from '../components/SOPForm';
+import { useRouter, useParams } from 'next/navigation';
+import SOPForm from '../../components/SOPForm';
 
 const EditSOP = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const params = useParams();
+  const id = params.id;
   const [sop, setSop] = useState(null);
 
   useEffect(() => {
-    // Fetch SOP data
+    // Fetch SOP data from localStorage
     const sops = JSON.parse(localStorage.getItem('sops') || '[]');
-    const foundSop = sops.find(s => s.id === id);
+    const foundSop = sops.find(s => String(s.id) === String(id));
     setSop(foundSop);
   }, [id]);
 
@@ -31,11 +33,11 @@ const EditSOP = () => {
 
       // Update in storage
       const sops = JSON.parse(localStorage.getItem('sops') || '[]');
-      const index = sops.findIndex(s => s.id === id);
+      const index = sops.findIndex(s => String(s.id) === String(id));
       sops[index] = updatedSOP;
       localStorage.setItem('sops', JSON.stringify(sops));
       
-      navigate('/');
+      router.push('/Home');
     } catch (error) {
       console.error('Error updating SOP:', error);
     }

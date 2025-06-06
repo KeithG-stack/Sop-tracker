@@ -1,10 +1,11 @@
-// src/pages/CreateSOP.jsx
+'use client';
+
 import React from 'react';
 import SOPForm from '../components/SOPForm';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 const CreateSOP = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleCreateSOP = async (sopData) => {
     try {
@@ -14,7 +15,7 @@ const CreateSOP = () => {
       localStorage.setItem('sops', JSON.stringify(existingSOPs));
       
       // Navigate back to home
-      navigate('/');
+      router.push('/Home');
     } catch (error) {
       console.error('Error creating SOP:', error);
     }

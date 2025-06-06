@@ -1,5 +1,5 @@
 "use server";
-import prisma from "../lib/prisma.config";
+import prisma from "../lib/prisma";
 
 export async function getData() {
     try {
