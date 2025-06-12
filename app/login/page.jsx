@@ -1,4 +1,4 @@
-// app/login/page.js
+// app/login/page.jsx
 'use client';
 
 import { useState } from 'react';
@@ -9,13 +9,16 @@ import Link from 'next/link';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
 
     try {
-      // Make an API call to your backend for user authentication
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
@@ -24,21 +27,26 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        // Authentication successful, redirect to the authenticated home page
-        router.push('./pages/Home');
+        // Authentication successful, redirect to home page
+        router.push('/home');
       } else {
-        // Authentication failed, handle the error
-        console.error('Authentication failed');
+        setError(data.error || 'Authentication failed');
       }
     } catch (error) {
       console.error('Error during authentication:', error);
+      setError('Network error occurred');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Login</h1>
+      {error && <div className={styles.error}>{error}</div>}
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label htmlFor="email">Email:</label>
@@ -60,8 +68,8 @@ export default function Login() {
             required
           />
         </div>
-        <button type="submit" className={styles.button}>
-          Login
+        <button type="submit" className={styles.button} disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
       <p className={styles.signupLink}>

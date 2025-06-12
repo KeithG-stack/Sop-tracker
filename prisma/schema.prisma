@@ -87,3 +87,10 @@ enum SOPStatus {
   PUBLISHED
   ARCHIVED
 }
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  text      String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
