@@ -1,10 +1,10 @@
 .sop-form {
   max-width: 600px;
-  margin: 64px auto;
+  margin: 48px auto;
   padding: 40px 32px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(26, 35, 126, 0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,8 +16,10 @@
   text-align: center;
   width: 100%;
   margin-bottom: 32px;
-  font-size: 1.75rem;
-  color: #333;
+  font-size: 2rem;
+  color: #1a237e;
+  font-weight: 700;
+  letter-spacing: -1px;
 }
 
 .form-section {
@@ -25,32 +27,24 @@
   border-radius: 10px;
   padding: 32px 0;
   margin-bottom: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.form-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  width: 100%;
+  box-shadow: 0 2px 8px rgba(26, 35, 126, 0.05);
 }
 
 .form-group {
   width: 100%;
-  max-width: 440px;
+  max-width: 480px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-bottom: 16px;
+  align-items: flex-start;
+  margin: 0 auto 24px auto;
 }
 
 .form-group label {
   margin-bottom: 10px;
   font-weight: 600;
-  color: #444;
-  font-size: 1.05rem;
-  text-align: center;
+  color: #1a237e;
+  font-size: 1.08rem;
+  text-align: left;
 }
 
 .form-group input,
@@ -63,27 +57,63 @@
   font-size: 1rem;
   transition: border-color 0.2s, box-shadow 0.2s;
   background-color: #f9fafb;
+  margin-bottom: 4px;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #4CAF50;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.12);
+  border-color: #1a237e;
+  box-shadow: 0 0 0 2px rgba(26, 35, 126, 0.10);
 }
 
-.form-group input.error,
-.form-group select.error,
-.form-group textarea.error {
-  border-color: #f44336;
-}
-
-.error {
+.form-group .error {
   color: #f44336;
+  font-size: 0.97rem;
+  margin-top: 4px;
+  text-align: left;
+}
+
+.procedure-steps,
+.related-documents {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 24px auto;
+}
+
+.procedure-steps input,
+.related-documents input {
+  margin-bottom: 8px;
+}
+
+.procedure-steps-list,
+.related-documents-list {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.procedure-steps-list div,
+.related-documents-list div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f3f4f6;
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin-bottom: 6px;
+}
+
+.procedure-steps-list button,
+.related-documents-list button {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 12px;
   font-size: 0.95rem;
-  margin-top: 6px;
-  text-align: center;
+  cursor: pointer;
+  margin-left: 12px;
 }
 
 .form-actions {
@@ -96,7 +126,7 @@
 }
 
 .btn-primary {
-  background: #4CAF50;
+  background: #1a237e;
   color: #fff;
   border: none;
   padding: 14px 32px;
@@ -104,14 +134,14 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(76, 175, 80, 0.1);
+  box-shadow: 0 3px 10px rgba(26, 35, 126, 0.08);
   transition: background 0.2s, box-shadow 0.2s;
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background: #388e3c;
-  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.2);
+  background: #3949ab;
+  box-shadow: 0 4px 16px rgba(26, 35, 126, 0.15);
 }
 
 .btn-secondary {

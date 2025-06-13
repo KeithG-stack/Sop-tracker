@@ -93,122 +93,110 @@ const SOPForm = ({ onSubmit, initialData = null }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
-  if (!validate()) return;
+  console.log('Submit button clicked');
+  if (!validate()) {
+    console.log('Validation failed:', errors);
+    return;
+  }
 
   setLoading(true);
   try {
     const submitData = {
       ...formData,
+      authorId: 1, // Replace with actual user ID
+      categoryId: 1, // Replace with actual category ID
       createdAt: initialData ? initialData.createdAt : new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
+    console.log('Submitting data:', submitData);
 
     if (onSubmit) {
       await onSubmit(submitData);
+      console.log('onSubmit called successfully');
     }
   } catch (error) {
     console.error('Error submitting form:', error);
   } finally {
     setLoading(false);
+    console.log('Form submission finished');
   }
 };
 
   return (
-    <form onSubmit={handleSubmit} className="sop-form">
-      <h2>{initialData ? 'Edit SOP' : 'Create SOP'}</h2>
+    // Example snippet for SOPForm.jsx
+<form onSubmit={handleSubmit} className="sop-form">
+  <h2>{initialData ? 'Edit SOP' : 'Create SOP'}</h2>
 
-      <div>
-        <label>Title</label>
-        <input name="title" value={formData.title} onChange={handleChange} required />
-        {errors.title && <span className="error">{errors.title}</span>}
-      </div>
+  <div className="form-group">
+    <label>Title</label>
+    <input name="title" value={formData.title} onChange={handleChange} required />
+    {errors.title && <span className="error">{errors.title}</span>}
+  </div>
 
-      <div>
-        <label>Category</label>
-        <input name="category" value={formData.category} onChange={handleChange} required />
-        {errors.category && <span className="error">{errors.category}</span>}
-      </div>
+  <div className="form-group">
+    <label>Category</label>
+    <input name="category" value={formData.category} onChange={handleChange} required />
+    {errors.category && <span className="error">{errors.category}</span>}
+  </div>
 
-      <div>
-        <label>Department</label>
-        <input name="department" value={formData.department} onChange={handleChange} required />
-        {errors.department && <span className="error">{errors.department}</span>}
-      </div>
+  {/* ...repeat for other fields... */}
 
-      <div>
-        <label>Purpose</label>
-        <textarea name="purpose" value={formData.purpose} onChange={handleChange} required />
-        {errors.purpose && <span className="error">{errors.purpose}</span>}
-      </div>
-
-      <div>
-        <label>Scope</label>
-        <textarea name="scope" value={formData.scope} onChange={handleChange} required />
-        {errors.scope && <span className="error">{errors.scope}</span>}
-      </div>
-
-      <div>
-        <label>Responsibilities</label>
-        <textarea name="responsibilities" value={formData.responsibilities} onChange={handleChange} />
-      </div>
-
-    <div>
-      <label>Content</label>
-      <textarea name="content" value={formData.content} onChange={handleChange} required />
+  <div className="procedure-steps">
+    <label>Procedure Steps:</label>
+    <input
+      type="text"
+      value={currentStep}
+      onChange={(e) => setCurrentStep(e.target.value)}
+      placeholder="Add a step"
+    />
+    <button type="button" onClick={addProcedureStep}>Add Step</button>
+    <div className="procedure-steps-list">
+      {formData.procedure.map((step) => (
+        <div key={step.id}>
+          {step.stepNumber}. {step.description}
+          <button type="button" onClick={() => removeProcedureStep(step.id)}>Remove</button>
+        </div>
+      ))}
     </div>
+    {errors.procedure && <span className="error">{errors.procedure}</span>}
+  </div>
 
-      <div>
-        <label>Procedure Steps</label>
-        <input
-          type="text"
-          value={currentStep}
-          onChange={(e) => setCurrentStep(e.target.value)}
-          placeholder="Add a step"
-        />
-        <button type="button" onClick={addProcedureStep}>Add Step</button>
-        {formData.procedure.map((step) => (
-          <div key={step.id}>
-            {step.stepNumber}. {step.description}
-            <button type="button" onClick={() => removeProcedureStep(step.id)}>Remove</button>
-          </div>
-        ))}
-        {errors.procedure && <span className="error">{errors.procedure}</span>}
-      </div>
+  <div className="related-documents">
+    <label>Related Documents:</label>
+    <input
+      type="text"
+      placeholder="Document name"
+      value={currentDoc.name}
+      onChange={(e) => setCurrentDoc({ ...currentDoc, name: e.target.value })}
+    />
+    <input
+      type="url"
+      placeholder="Document link"
+      value={currentDoc.link}
+      onChange={(e) => setCurrentDoc({ ...currentDoc, link: e.target.value })}
+    />
+    <button type="button" onClick={addRelatedDocument}>Add Document</button>
+    <div className="related-documents-list">
+      {formData.relatedDocuments.map((doc) => (
+        <div key={doc.id}>
+          <a href={doc.link} target="_blank" rel="noopener noreferrer">{doc.name}</a>
+          <button type="button" onClick={() => removeRelatedDocument(doc.id)}>Remove</button>
+        </div>
+      ))}
+    </div>
+  </div>
 
-      <div>
-        <label>Related Documents</label>
-        <input
-          type="text"
-          placeholder="Document name"
-          value={currentDoc.name}
-          onChange={(e) => setCurrentDoc({ ...currentDoc, name: e.target.value })}
-        />
-        <input
-          type="url"
-          placeholder="Document link"
-          value={currentDoc.link}
-          onChange={(e) => setCurrentDoc({ ...currentDoc, link: e.target.value })}
-        />
-        <button type="button" onClick={addRelatedDocument}>Add Document</button>
-        {formData.relatedDocuments.map((doc) => (
-          <div key={doc.id}>
-            <a href={doc.link} target="_blank">{doc.name}</a>
-            <button type="button" onClick={() => removeRelatedDocument(doc.id)}>Remove</button>
-          </div>
-        ))}
-      </div>
-
-      <div className="form-actions">
-        <button type="button" onClick={() => router.back()} className="btn-secondary">
-          Cancel
-        </button>
-        <button type="submit" disabled={loading} className="btn-primary">
-          {loading ? 'Saving...' : (initialData ? 'Update SOP' : 'Create SOP')}
-        </button>
-      </div>
-    </form>
+  <div className="form-actions">
+    <button type="button" onClick={() => router.back('./home')} className="btn-secondary">
+      Cancel
+    </button>
+    <button type="submit" disabled={loading} className="btn-primary">
+      {loading ? 'Saving...' : (initialData ? 'Update SOP' : 'Create SOP')}
+    </button>
+  </div>
+</form>
   );
 };
 

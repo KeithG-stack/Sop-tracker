@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+
 
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -11,17 +12,6 @@ export default function CalendarPage() {
   const [showModal, setShowModal] = useState(false);
   const [eventInput, setEventInput] = useState('');
   const router = useRouter();
-
-  // Load events from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem('calendarEvents');
-    if (stored) setEvents(JSON.parse(stored));
-  }, []);
-
-  // Save events to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('calendarEvents', JSON.stringify(events));
-  }, [events]);
 
   // Get events for the selected date
   const dateKey = selectedDate.toISOString().split('T')[0];

@@ -10,7 +10,8 @@ export default function CreateSOP() {
 
   // Remove the default value for sopData!
   const handleCreateSOP = async (sopData) => {
-    sopData.authorId;
+  sopData.authorId = 1;      // Replace 1 with a real user ID from your database
+  sopData.categoryId = 1;    // Replace 1 with a real category ID from your database
   try {
     const response = await fetch('/api/sops', {
       method: 'POST',
@@ -18,14 +19,12 @@ export default function CreateSOP() {
       body: JSON.stringify(sopData),
     });
     if (!response.ok) throw new Error('Failed to create SOP');
-    // Navigate back to home
     router.push('/home');
   } catch (error) {
     console.error('Error creating SOP:', error);
     alert('Error creating SOP. Please try again.');
   }
 };
-
   return (
     <div className="create-sop-page">
       <h1>Create New SOP</h1>

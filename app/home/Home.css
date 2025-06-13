@@ -28,7 +28,7 @@
 
 /* Buttons */
 .btn-primary {
-  background-color: #4CAF50;
+  background-color: #1a237e;
   color: white;
   padding: 12px 24px;
   border: none;
@@ -43,7 +43,7 @@
 }
 
 .btn-primary:hover {
-  background-color: #45a049;
+  background-color: #3949ab;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -116,7 +116,7 @@
 
 .status-badge.active {
   background-color: #e8f5e9;
-  color: #388e3c;
+  color: #1a237e;
 }
 
 .status-badge.archived {
@@ -204,7 +204,7 @@
 }
 
 .empty-state a {
-  color: #4CAF50;
+  color: #1a237e;
   text-decoration: none;
   font-weight: 600;
   font-size: 16px;
@@ -216,7 +216,7 @@
 }
 
 .empty-state a:hover {
-  background-color: #4CAF50;
+  background-color: #1a237e;
   color: white;
 }
 
@@ -317,5 +317,5 @@
 
 .search-box:focus {
   outline: none;
-  border-color: #4CAF50;
+  border-color: #1a237e;
 }

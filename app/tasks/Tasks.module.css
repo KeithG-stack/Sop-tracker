@@ -37,11 +37,11 @@
 
 .input:focus {
   outline: none;
-  border-color: #4CAF50;
+  border-color: #1a237e;
 }
 
 .addBtn {
-  background: #4CAF50;
+  background: #1a237e;
   color: #fff;
   border: none;
   padding: 12px 24px;
@@ -54,7 +54,7 @@
 
 .addBtn:hover,
 .addBtn:focus {
-  background: #388e3c;
+  background: #3949ab;
 }
 
 .taskList {
@@ -73,7 +73,7 @@
 }
 
 .completedTaskItem span {
-  color: #4CAF50;
+  color: #1a237e;
   text-decoration: line-through;
 }
 

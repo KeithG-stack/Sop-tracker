@@ -1,5 +1,6 @@
 "use server";
-import prisma from "../lib/prisma";
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 export async function getData() {
     try {
