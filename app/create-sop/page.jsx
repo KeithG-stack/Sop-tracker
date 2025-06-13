@@ -10,6 +10,7 @@ export default function CreateSOP() {
 
   // Remove the default value for sopData!
   const handleCreateSOP = async (sopData) => {
+    sopData.authorId;
   try {
     const response = await fetch('/api/sops', {
       method: 'POST',

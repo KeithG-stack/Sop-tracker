@@ -1,49 +1,66 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import './Tasks.module.css';
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  // Load tasks from localStorage on mount
+  // Fetch tasks from the database
+  const fetchTasks = async () => {
+    setLoading(true);
+    const res = await fetch('/api/tasks');
+    const data = await res.json();
+    setTasks(data);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('tasks') || '[]');
-    setTasks(stored);
+    fetchTasks();
   }, []);
 
-  // Save tasks to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
-
   // Add a new task
-  const handleAddTask = (e) => {
+  const handleAddTask = async (e) => {
     e.preventDefault();
     if (!taskInput.trim()) return;
-    setTasks([
-      ...tasks,
-      { id: Date.now(), text: taskInput.trim(), completed: false }
-    ]);
+    await fetch('/api/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: taskInput.trim() }),
+    });
     setTaskInput('');
+    fetchTasks();
   };
 
   // Mark as completed
-  const handleComplete = (id) => {
-    setTasks(tasks.map(t => t.id === id ? { ...t, completed: true } : t));
+  const handleComplete = async (id) => {
+    await fetch('/api/tasks', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, completed: true }),
+    });
+    fetchTasks();
   };
 
   // Remove a task
-  const handleDelete = (id) => {
-    setTasks(tasks.filter(t => t.id !== id));
+  const handleDelete = async (id) => {
+    await fetch('/api/tasks', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+    fetchTasks();
   };
 
-  // Assigned and completed tasks
   const assignedTasks = tasks.filter(t => !t.completed);
   const completedTasks = tasks.filter(t => t.completed);
 
   return (
-    <div style={{ maxWidth: 600, margin: '40px auto', padding: 24 }}>
+    <div style={{ maxWidth: 600, margin: '40px auto', padding: 24, position: 'relative', minHeight: '80vh' }}>
       <h1 style={{ textAlign: 'center', marginBottom: 32 }}>Task Manager</h1>
 
       {/* Create Task Section */}
@@ -56,6 +73,7 @@ export default function TasksPage() {
             onChange={e => setTaskInput(e.target.value)}
             placeholder="Enter new task..."
             style={{ flex: 1, padding: 10, borderRadius: 6, border: '1.5px solid #ccc' }}
+            disabled={loading}
           />
           <button type="submit" style={{
             padding: '10px 22px',
@@ -65,7 +83,7 @@ export default function TasksPage() {
             border: 'none',
             fontWeight: 600,
             cursor: 'pointer'
-          }}>
+          }} disabled={loading}>
             Add Task
           </button>
         </form>
@@ -128,6 +146,27 @@ export default function TasksPage() {
           </ul>
         )}
       </section>
+
+      {/* Back to Home Button - bottom right */}
+      <button
+        onClick={() => router.push('/home')}
+        style={{
+        position: 'fixed',
+        bottom: 32,
+        right: 32,
+        background: '#1a237e', // navy blue-ish
+        color: '#fff',
+        border: 'none',
+        padding: '12px 28px',
+        borderRadius: 8,
+        fontSize: '1rem',
+        fontWeight: 500,
+        cursor: 'pointer',
+        boxShadow: '0 2px 8px rgba(60,72,88,0.10)'
+  }}
+>
+  ← Back to Home
+</button>
     </div>
   );
 }

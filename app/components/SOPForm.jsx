@@ -94,32 +94,26 @@ const SOPForm = ({ onSubmit, initialData = null }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+  e.preventDefault();
+  if (!validate()) return;
 
-    setLoading(true);
-    try {
-      const submitData = {
-        ...formData,
-        createdAt: initialData ? initialData.createdAt : new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+  setLoading(true);
+  try {
+    const submitData = {
+      ...formData,
+      createdAt: initialData ? initialData.createdAt : new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
 
-      const response = await fetch('/api/sops', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submitData),
-      });
-
-      if (!response.ok) throw new Error('Failed to create SOP');
-
-      router.push('/home');
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    } finally {
-      setLoading(false);
+    if (onSubmit) {
+      await onSubmit(submitData);
     }
-  };
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <form onSubmit={handleSubmit} className="sop-form">

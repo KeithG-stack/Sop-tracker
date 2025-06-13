@@ -8,7 +8,7 @@ export async function POST(request) {
     const sop = await prisma.sOP.create({
   data: {
     title: data.title,
-    content: data.content, // <-- Add this line!
+    content: data.content,
     category: data.category,
     department: data.department,
     purpose: data.purpose,
@@ -21,7 +21,6 @@ export async function POST(request) {
     version: data.version,
     status: data.status,
     authorId: data.authorId,
-    author: data.authorName,
     categoryId: data.categoryId,
   },
 });
