@@ -68,8 +68,7 @@ export default function Home() {
                     </span>
                   </div>
                   <div className="sop-card-body">
-                    <p><strong>Category:</strong> {sop.category}</p>
-                    <p><strong>Department:</strong> {sop.department}</p>
+                    <p><strong>Category:</strong> {sop.category?.name}</p>
                     <p><strong>Version:</strong> {sop.version}</p>
                     <p><strong>Last Updated:</strong> {new Date(sop.updatedAt).toLocaleDateString()}</p>
                   </div>

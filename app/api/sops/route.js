@@ -1,34 +1,31 @@
 import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+// import { getCurrentUserId } from 'path-to-your-auth-utils'; // Implement this for real auth
 
-
+// Instantiate Prisma client
+const prisma = new PrismaClient();
 
 export async function POST(request) {
   try {
     const data = await request.json();
+    // In a real app, get the authenticated user's ID from session/auth
+    // const userId = await getCurrentUserId(request);
+    const userId = 1; // <-- Hardcoded for demo; replace with real user ID from auth
 
-    // Validate required IDs
-    if (!data.authorId || !data.categoryId) {
-      return NextResponse.json(
-        { error: 'Missing authorId or categoryId' },
-        { status: 400 }
-      );
+    if (!userId) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+    }
+    if (!data.categoryId) {
+      return NextResponse.json({ error: 'Missing categoryId' }, { status: 400 });
     }
 
     const sop = await prisma.sOP.create({
       data: {
         title: data.title,
         content: data.content,
-        department: data.department,
-        purpose: data.purpose,
-        scope: data.scope,
-        responsibilities: data.responsibilities,
-        procedure: JSON.stringify(data.procedure),
-        relatedDocuments: JSON.stringify(data.relatedDocuments),
-        reviewFrequency: data.reviewFrequency,
-        effectiveDate: new Date(data.effectiveDate),
-        version: data.version,
-        status: data.status,
-        author: { connect: { id: data.authorId } },
+        version: data.version || '1.0',
+        status: data.status || 'DRAFT',
+        author: { connect: { id: userId } },
         category: { connect: { id: data.categoryId } }
       }
     });
@@ -38,3 +35,22 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Failed to create SOP' }, { status: 500 });
   }
 }
+
+export async function GET() {
+  try {
+    console.log('Received GET request for SOPs');
+    const sops = await prisma.sOP.findMany({
+      orderBy: { updatedAt: 'desc' },
+      include: {
+        author: true,
+        category: true,
+      },
+    });
+    return NextResponse.json(sops, { status: 200 });
+  } catch (error) {
+    console.error('Failed to fetch SOPs:', error);
+    return NextResponse.json({ error: 'Failed to fetch SOPs' }, { status: 500 });
+  }
+}
+
+  
