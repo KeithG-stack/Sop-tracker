@@ -19,6 +19,9 @@ export default function SideNav() {
         <li className={pathname === '/calendar' ? styles.active : ''}>
           <Link href="/calendar">📅 Calendar</Link>
         </li>
+        <li className={pathname === '/settings' ? styles.active : ''}>
+          <Link href="/settings">⚙️ Settings</Link>
+        </li>
       </ul>
     </nav>
   );

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const SOPFormUser = ({ onSubmit, authorId, categories = [] }) => {
+const SOPFormUser = ({ onSubmit, authorId, categories = [], initialData }) => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -8,6 +8,17 @@ const SOPFormUser = ({ onSubmit, authorId, categories = [] }) => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  // Reset form when initialData changes (for edit mode)
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        title: initialData.title || '',
+        content: initialData.content || '',
+        categoryId: initialData.categoryId ? String(initialData.categoryId) : '',
+      });
+    }
+  }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,8 +43,8 @@ const SOPFormUser = ({ onSubmit, authorId, categories = [] }) => {
       const submitData = {
         title: formData.title,
         content: formData.content,
-        version: '1.0',
-        status: 'DRAFT',
+        version: initialData?.version || '1.0',
+        status: initialData?.status || 'DRAFT',
         authorId: authorId,
         categoryId: parseInt(formData.categoryId, 10),
       };
@@ -45,9 +56,19 @@ const SOPFormUser = ({ onSubmit, authorId, categories = [] }) => {
     }
   };
 
+  // Clear all fields
+  const handleClear = () => {
+    setFormData({
+      title: '',
+      content: '',
+      categoryId: '',
+    });
+    setErrors({});
+  };
+
   return (
     <form onSubmit={handleSubmit} className="sop-form">
-      <h2>Create SOP</h2>
+      <h2>{initialData ? 'Edit SOP' : 'Create SOP'}</h2>
       <div className="form-group">
         <label>Title</label>
         <input name="title" value={formData.title} onChange={handleChange} required />
@@ -59,12 +80,16 @@ const SOPFormUser = ({ onSubmit, authorId, categories = [] }) => {
         {errors.content && <span className="error">{errors.content}</span>}
       </div>
       <div className="form-group">
+        <label>Author ID</label>
+        <input name="authorId" value={authorId} readOnly style={{ background: '#f5f5f5' }} />
+      </div>
+      <div className="form-group">
         <label>Category</label>
         {categories.length > 0 ? (
           <select name="categoryId" value={formData.categoryId} onChange={handleChange} required>
             <option value="">Select a category</option>
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>{cat.name}</option>
+              <option key={cat.id} value={cat.id}>{cat.name} (ID: {cat.id})</option>
             ))}
           </select>
         ) : (
@@ -74,11 +99,19 @@ const SOPFormUser = ({ onSubmit, authorId, categories = [] }) => {
       </div>
       <div className="form-actions">
         <button type="submit" disabled={loading} className="btn-primary">
-          {loading ? 'Saving...' : 'Create SOP'}
+          {loading ? 'Saving...' : (initialData ? 'Update SOP' : 'Create SOP')}
+        </button>
+        <button
+          type="button"
+          className="btn-secondary"
+          style={{ marginLeft: 12 }}
+          onClick={handleClear}
+        >
+          Clear All
         </button>
       </div>
     </form>
   );
 };
 
-export default SOPFormUser; 
+export default SOPFormUser;
