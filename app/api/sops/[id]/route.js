@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   if (!id || isNaN(Number(id))) {
     return NextResponse.json({ error: 'Invalid or missing id parameter' }, { status: 400 });
   }
@@ -47,7 +47,7 @@ export async function PUT(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   if (!id || isNaN(Number(id))) {
     return NextResponse.json({ error: 'Invalid or missing id parameter' }, { status: 400 });
   }

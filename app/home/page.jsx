@@ -74,7 +74,7 @@ export default function Home() {
                   </div>
                   <div className="sop-card-actions">
                     <button 
-                      onClick={() => router.push(`/sop/${sop.id}`)}
+                      onClick={() => router.push(`/view-sop/${sop.id}`)}
                       className="btn-view"
                     >
                       View
