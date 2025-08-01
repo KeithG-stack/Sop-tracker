@@ -14,7 +14,7 @@ export default function SettingsPage() {
     // Optionally clear cookies if you use them
     // document.cookie = 'token=; Max-Age=0; path=/;';
 
-    router.push('/login');
+    router.push('/'); // Redirect to landing page
   };
 
   useEffect(() => {

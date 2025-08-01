@@ -17,7 +17,7 @@ export default function HomePage() {
           </Link>
         </div>
         <div className={styles.heroImage}>
-          <img src="/favicon.ico" alt="SOP Management" width={120} height={120} />
+          <img src="/image.jpeg" alt="SRII Consulting Logo" width={120} height={120} />
         </div>
       </header>
 
