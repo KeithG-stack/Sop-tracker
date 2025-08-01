@@ -54,10 +54,24 @@ async function main() {
     data: {
       title: 'Sample Safety Procedure',
       content: 'This is a sample SOP for safety procedures...',
-      version: '1.0',
-      status: 'PUBLISHED',
-      authorId: admin.id,
-      categoryId: categories[0].id,
+      category: { connect: { id: 1 } },
+      department: 'Operations',
+      purpose: 'Demonstrate admin SOP',
+      scope: 'Company-wide',
+      responsibilities: 'Admins only',
+      procedure: JSON.stringify([
+      { stepNumber: 1, description: 'Step one', id: 1 },
+      { stepNumber: 2, description: 'Step two', id: 2 }
+    ]),
+    relatedDocuments: JSON.stringify([
+      { name: 'Policy Doc', link: 'https://example.com/policy', id: 1 }
+    ]),
+    reviewFrequency: 'quarterly',
+    effectiveDate: new Date(),
+    version: '1.0',
+    status: 'PUBLISHED',
+    authorId: admin.id,
+    categoryId: categories[0].id,
     },
   });
 
